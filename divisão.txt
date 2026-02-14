@@ -1,11 +1,10 @@
 ========================== DIVISÃO DE TABELAS ==========================
 Júlio: CARGOS, FUNCIONARIOS
 
-Rafael: ATRIBUICAO_TAREFAS
-
 Ryan: CARGO_PERMISSOES, TAREFA_FOTOS
 
 Paulo: TAREFAS, SETORES
 
-Maxsuel: PERMISSOES
+Maxsuel: PERMISSOES, ATRIBUICAO_TAREFAS
+
 
