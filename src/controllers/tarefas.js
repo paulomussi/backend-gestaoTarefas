@@ -23,7 +23,7 @@ module.exports = {
                     a.atr_status,
                     a.atr_funcionario_id
                 FROM TAREFAS t
-                LEFT JOIN ATRIBUICAO_TAREFAS a ON a.fot_tarefa_id = t.tar_id
+                LEFT JOIN ATRIBUICAO_TAREFAS a ON a.atr_tarefa_id = t.tar_id
                 WHERE 1 = 1
             `;
 
@@ -185,14 +185,14 @@ module.exports = {
 
             // Apagar imagens tarefa
             const sqlVerificaTarefaFoto = `
-                SELECT COUNT(*) AS quantidade FROM tarefa_fotos WHERE fot_tarefa_id = ?
+                SELECT COUNT(*) AS quantidade FROM tarefa_fotos WHERE atr_tarefa_id = ?
             `;
 
             const [verificaTarefaFoto] = await db.query(sqlVerificaTarefaFoto, [id]);
 
             if (verificaTarefaFoto[0].quantidade > 0) {
                 const sqlApagarFotosTarefa = `
-                    DELETE FROM tarefa_fotos WHERE fot_tarefa_id = ?
+                    DELETE FROM tarefa_fotos WHERE atr_tarefa_id = ?
                 `;
                 await db.query(sqlApagarFotosTarefa, [id]);
             }
@@ -200,13 +200,13 @@ module.exports = {
 
             // Apagar atribuição da tarefa
             const sqlVerificaTarefaAtribuicao = `
-                SELECT COUNT(*) AS quantidade FROM atribuicao_tarefas WHERE fot_tarefa_id = ?
+                SELECT COUNT(*) AS quantidade FROM atribuicao_tarefas WHERE atr_tarefa_id = ?
             `;
 
             const [verificaTarefaAtribuicao] = await db.query(sqlVerificaTarefaAtribuicao, [id]);
             if (verificaTarefaAtribuicao[0].quantidade > 0) {
                 const sqlApagarAtribuicaoTarefa = `
-                    DELETE FROM atribuicao_tarefas WHERE fot_tarefa_id = ?
+                    DELETE FROM atribuicao_tarefas WHERE atr_tarefa_id = ?
                 `;
                 await db.query(sqlApagarAtribuicaoTarefa, [id]);
             }

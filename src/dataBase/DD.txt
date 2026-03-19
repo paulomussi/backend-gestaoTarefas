@@ -65,7 +65,7 @@ Fonte: Autoria própria
 Quadro 7 - Tabela ATRIBUICAO_TAREFAS
 Campo Lógico	Campo Físico	Tipo de dados	Tamanho do campo	PK	FK	Observações
 Id da atribuição	atr_id	INT		x		Auto-Incremento
-Id atribuição da tarefa	fot_tarefa_id	INT			x	
+Id atribuição da tarefa	atr_tarefa_id	INT			x	
 Id atribuição do funcionário	atr_funcionario_id	INT			x	
 Data de atribuição	atr_data_atribuicao	DATETIME				
 Fonte: Autoria própria
@@ -73,7 +73,7 @@ Fonte: Autoria própria
 Quadro 8 - Tabela TAREFA_FOTOS
 Campo Lógico	Campo Físico	Tipo de dados	Tamanho do campo	PK	FK	Observações
 Foto	fot_id	INT		X		Auto Incremento
-ID da Tarefa Atribuida	fot_tarefa_id	INT			X	ID da tarefa
+ID da Tarefa Atribuida	atr_tarefa_id	INT			X	ID da tarefa
 Nome	fot_nome	VARCHAR	60			Nome da pessoa que enviou a foto
 Descrição	fot_descricao	VARCHAR	255			Descrição da foto
 Data de Envio	fot_data_envio	DATETIME				Data de envio 

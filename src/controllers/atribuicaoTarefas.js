@@ -6,7 +6,7 @@ module.exports = {
 
             const sql = `
             SELECT 
-                atr_id, fot_tarefa_id, atr_funcionario_id, atr_status, atr_data_atribuicao 
+                atr_id, atr_tarefa_id, atr_funcionario_id, atr_status, atr_data_atribuicao 
             FROM ATRIBUICAO_TAREFAS;
             `;
 
@@ -36,7 +36,7 @@ module.exports = {
             const { status, tarefaId, funcId } = request.body;
 
             const sql = `INSERT INTO ATRIBUICAO_TAREFAS 
-                (fot_tarefa_id, atr_funcionario_id, atr_status, atr_data_atribuicao)
+                (atr_tarefa_id, atr_funcionario_id, atr_status, atr_data_atribuicao)
             VALUES
                 (?, ?, ?, NOW());`;
 

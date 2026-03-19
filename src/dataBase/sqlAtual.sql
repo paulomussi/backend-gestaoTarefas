@@ -32,6 +32,7 @@ CREATE TABLE FUNCIONARIOS (
     func_crg_id INT NOT NULL,
     func_nome VARCHAR(60) NOT NULL,
     func_email VARCHAR(80) UNIQUE NOT NULL,
+    func_login VARCHAR(80) UNIQUE NOT NULL,
     func_senha VARCHAR(255) NOT NULL,
     func_ativo BIT NOT NULL,
     func_data_criacao DATETIME NOT NULL,
@@ -67,11 +68,11 @@ CREATE TABLE TAREFAS (
 
 CREATE TABLE ATRIBUICAO_TAREFAS (
     atr_id INT AUTO_INCREMENT PRIMARY KEY,
-    fot_tarefa_id INT NOT NULL,
+    atr_tarefa_id INT NOT NULL,
     atr_funcionario_id INT NOT NULL,
     atr_data_atribuicao DATETIME NOT NULL, 
     atr_status TINYINT NOT NULL,
-    FOREIGN KEY (fot_tarefa_id) REFERENCES TAREFAS(tar_id),
+    FOREIGN KEY (atr_tarefa_id) REFERENCES TAREFAS(tar_id),
     FOREIGN KEY (atr_funcionario_id) REFERENCES FUNCIONARIOS(func_id)
 );
 
@@ -121,28 +122,29 @@ INSERT INTO SETORES (set_nome) VALUES
 -- =========================
 -- 4. FUNCIONÁRIOS (20 funcionários)
 -- =========================
-INSERT INTO FUNCIONARIOS (func_setor_id, func_crg_id, func_nome, func_email, func_senha, func_ativo, func_data_criacao)
+INSERT INTO FUNCIONARIOS 
+(func_setor_id, func_crg_id, func_nome, func_email, func_login, func_senha, func_ativo, func_data_criacao)
 VALUES
-(1, 1, 'Carlos Silva', 'carlos.silva@mercadobom.com', 'senha123', 1, NOW()),
-(2, 2, 'Fernanda Costa', 'fernanda.costa@mercadobom.com', 'senha123', 1, NOW()),
-(4, 3, 'João Pereira', 'joao.pereira@mercadobom.com', 'senha123', 1, NOW()),
-(3, 4, 'Lucas Andrade', 'lucas.andrade@mercadobom.com', 'senha123', 1, NOW()),
-(5, 5, 'Mariana Lima', 'mariana.lima@mercadobom.com', 'senha123', 1, NOW()),
-(3, 4, 'Rafaela Souza', 'rafaela.souza@mercadobom.com', 'senha123', 1, NOW()),
-(4, 3, 'Paulo Henrique', 'paulo.henrique@mercadobom.com', 'senha123', 1, NOW()),
-(6, 4, 'Diego Martins', 'diego.martins@mercadobom.com', 'senha123', 1, NOW()),
-(7, 4, 'Juliana Ramos', 'juliana.ramos@mercadobom.com', 'senha123', 1, NOW()),
-(5, 5, 'Amanda Torres', 'amanda.torres@mercadobom.com', 'senha123', 1, NOW()),
-(4, 3, 'Eduardo Nunes', 'eduardo.nunes@mercadobom.com', 'senha123', 1, NOW()),
-(3, 4, 'Ricardo Gomes', 'ricardo.gomes@mercadobom.com', 'senha123', 1, NOW()),
-(6, 4, 'Beatriz Santos', 'beatriz.santos@mercadobom.com', 'senha123', 1, NOW()),
-(2, 2, 'Tatiane Rocha', 'tatiane.rocha@mercadobom.com', 'senha123', 1, NOW()),
-(7, 4, 'Guilherme Araújo', 'guilherme.araujo@mercadobom.com', 'senha123', 1, NOW()),
-(1, 2, 'Patrícia Mendes', 'patricia.mendes@mercadobom.com', 'senha123', 1, NOW()),
-(6, 4, 'Henrique Duarte', 'henrique.duarte@mercadobom.com', 'senha123', 1, NOW()),
-(5, 5, 'Larissa Teixeira', 'larissa.teixeira@mercadobom.com', 'senha123', 1, NOW()),
-(3, 4, 'Matheus Lima', 'matheus.lima@mercadobom.com', 'senha123', 1, NOW()),
-(7, 4, 'Bruna Cardoso', 'bruna.cardoso@mercadobom.com', 'senha123', 1, NOW());
+(1, 1, 'Carlos Silva', 'carlos.silva@mercadobom.com', 'carlossilva', 'senha123', 1, NOW()),
+(2, 2, 'Fernanda Costa', 'fernanda.costa@mercadobom.com', 'fernandacosta', 'senha123', 1, NOW()),
+(4, 3, 'João Pereira', 'joao.pereira@mercadobom.com', 'joaopereira', 'senha123', 1, NOW()),
+(3, 4, 'Lucas Andrade', 'lucas.andrade@mercadobom.com', 'lucasandrade', 'senha123', 1, NOW()),
+(5, 5, 'Mariana Lima', 'mariana.lima@mercadobom.com', 'marianalima', 'senha123', 1, NOW()),
+(3, 4, 'Rafaela Souza', 'rafaela.souza@mercadobom.com', 'rafaelasouza', 'senha123', 1, NOW()),
+(4, 3, 'Paulo Henrique', 'paulo.henrique@mercadobom.com', 'paulohenrique', 'senha123', 1, NOW()),
+(6, 4, 'Diego Martins', 'diego.martins@mercadobom.com', 'diegomartins', 'senha123', 1, NOW()),
+(7, 4, 'Juliana Ramos', 'juliana.ramos@mercadobom.com', 'julianaramos', 'senha123', 1, NOW()),
+(5, 5, 'Amanda Torres', 'amanda.torres@mercadobom.com', 'amandatorres', 'senha123', 1, NOW()),
+(4, 3, 'Eduardo Nunes', 'eduardo.nunes@mercadobom.com', 'eduardonunes', 'senha123', 1, NOW()),
+(3, 4, 'Ricardo Gomes', 'ricardo.gomes@mercadobom.com', 'ricardogomes', 'senha123', 1, NOW()),
+(6, 4, 'Beatriz Santos', 'beatriz.santos@mercadobom.com', 'beatrizsantos', 'senha123', 1, NOW()),
+(2, 2, 'Tatiane Rocha', 'tatiane.rocha@mercadobom.com', 'tatianerocha', 'senha123', 1, NOW()),
+(7, 4, 'Guilherme Araújo', 'guilherme.araujo@mercadobom.com', 'guilhermearaujo', 'senha123', 1, NOW()),
+(1, 2, 'Patrícia Mendes', 'patricia.mendes@mercadobom.com', 'patriciamendes', 'senha123', 1, NOW()),
+(6, 4, 'Henrique Duarte', 'henrique.duarte@mercadobom.com', 'henriqueduarte', 'senha123', 1, NOW()),
+(5, 5, 'Larissa Teixeira', 'larissa.teixeira@mercadobom.com', 'larissateixeira', 'senha123', 1, NOW()),
+(3, 4, 'Matheus Lima', 'matheus.lima@mercadobom.com', 'matheuslima', 'senha123', 1, NOW()),
+(7, 4, 'Bruna Cardoso', 'bruna.cardoso@mercadobom.com', 'brunacardoso', 'senha123', 1, NOW());
 
 -- =========================
 -- 5. CARGO_PERMISSOES
@@ -206,7 +208,7 @@ VALUES
 -- =========================
 -- 7. ATRIBUICAO_TAREFAS
 -- =========================
-INSERT INTO ATRIBUICAO_TAREFAS (fot_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status)
+INSERT INTO ATRIBUICAO_TAREFAS (atr_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status)
 VALUES
 (1, 4, NOW(), 0),
 (2, 3, NOW(), 0),
@@ -255,5 +257,5 @@ SELECT set_id, set_nome FROM SETORES;
 SELECT func_id, func_setor_id, func_crg_id, func_nome, func_email, func_senha, func_ativo, func_data_criacao FROM FUNCIONARIOS;
 SELECT crg_id, prm_id, crg_prm_cadastrar, crg_prm_editar, crg_prm_consultar FROM CARGO_PERMISSOES;
 SELECT tar_id, tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_prazo, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto FROM TAREFAS;
-SELECT atr_id, fot_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status FROM ATRIBUICAO_TAREFAS;
-SELECT fot_id, fot_tarefa_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;
+SELECT atr_id, atr_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status FROM ATRIBUICAO_TAREFAS;
+SELECT fot_id, atr_tarefa_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;

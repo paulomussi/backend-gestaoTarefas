@@ -14,6 +14,7 @@ module.exports = {
                 func_crg_id, 
                 func_nome, 
                 func_email, 
+                func_login,
                 func_senha, 
                 func_ativo = 1 AS func_ativo, 
                 func_data_criacao 
@@ -50,20 +51,21 @@ module.exports = {
     //---------------------CADASTRAR FUNCIONÁRIOS------------------------------
     async cadastrarFuncionarios(request, response) {
         try {
-            const { setor, cargo, nome, email, senha, ativo, data } = request.body;
+            const { setor, cargo, nome, email, login, senha, ativo, data } = request.body;
 
             const sql = `INSERT INTO FUNCIONARIOS 
-                (func_setor_id, func_crg_id, func_nome, func_email, func_senha, func_ativo, func_data_criacao) 
+                (func_setor_id, func_crg_id, func_nome, func_email, func_login, func_senha, func_ativo, func_data_criacao) 
             VALUES 
-                (?, ?, ?, ?, ?, ?, NOW());`;
+                (?, ?, ?, ?, ?, ?, ?, NOW());`;
 
-            const values = [setor, cargo, nome, email, senha, ativo, data];
+            const values = [setor, cargo, nome, email, login, senha, ativo, data];
             const [result] = await db.query(sql, values);
 
             const dados = {
                 id: result.insertId,
                 nome,
                 email,
+                login,
                 ativo,
                 data_criacao: new Date()
             };
@@ -88,18 +90,18 @@ module.exports = {
     //-----------------------EDITAR FUNCIONÁRIOS-------------------------------
     async editarFuncionarios(request, response) {
         try {
-            const { setor, cargo, nome, email, senha, ativo, data } = request.body;
+            const { setor, cargo, nome, email, login, senha, ativo, data } = request.body;
 
             const { id } = request.params;
 
             const sql = `
                 UPDATE FUNCIONARIOS SET
-                    func_setor_id = ?, func_crg_id = ?, func_nome = ?, func_email = ?, func_senha = ?, func_ativo =?, func_data_criacao = ?
+                    func_setor_id = ?, func_crg_id = ?, func_nome = ?, func_email = ?, func_login = ?, func_senha = ?, func_ativo =?, func_data_criacao = ?
                 WHERE
                     func_id = ?;
             `;
 
-            const values = [setor, cargo, nome, email, senha, ativo, data, id];
+            const values = [setor, cargo, nome, email, login, senha, ativo, data, id];
 
             const [result] = await db.query(sql, values);
 
@@ -115,6 +117,7 @@ module.exports = {
                 id,
                 nome,
                 email,
+                login,
                 ativo
             };
 
