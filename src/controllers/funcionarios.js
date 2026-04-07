@@ -49,7 +49,7 @@ module.exports = {
     //---------------------CADASTRAR FUNCIONÁRIOS------------------------------
     async cadastrarFuncionarios(request, response) {
         try {
-            const { setor, cargo, nome, email, login, senha, ativo, data } = request.body;
+            const { setor, cargo, nome, email, ativo, data } = request.body;
 
             const sql = `INSERT INTO FUNCIONARIOS 
                 (func_setor_id, func_crg_id, func_nome, func_email, func_ativo, func_data_criacao) 
@@ -87,7 +87,7 @@ module.exports = {
     //-----------------------EDITAR FUNCIONÁRIOS-------------------------------
     async editarFuncionarios(request, response) {
         try {
-            const { setor, cargo, nome, email, login, senha, ativo, data } = request.body;
+            const { setor, cargo, nome, email, ativo, data } = request.body;
 
             const { id } = request.params;
 

@@ -3,6 +3,7 @@ const router = express.Router();
 
 const TarefasController = require('../controllers/tarefas');
 const SetoresController = require('../controllers/setores');
+const UsuariosController = require('../controllers/usuarios');
 
 router.get('/tarefas', TarefasController.listarTarefas);
 router.post('/tarefas', TarefasController.cadastrarTarefas);
@@ -14,7 +15,6 @@ router.post('/setores', SetoresController.cadastrarSetores);
 router.patch('/setores/:id', SetoresController.editarSetores);
 router.delete('/setores/:id', SetoresController.apagarSetores);
 
-const LoginController = require('../controllers/usuario');
-
+router.post('/usuarios', UsuariosController.cadastrarUsuarios);
 
 module.exports = router;
