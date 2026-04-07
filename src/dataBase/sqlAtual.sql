@@ -44,6 +44,7 @@ CREATE TABLE USUARIOS (
     usu_func_id INT NOT NULL UNIQUE,
     usu_login VARCHAR(80) NOT NULL UNIQUE,
     usu_senha VARCHAR(255) NOT NULL,
+    usu_ativo BIT NOT NULL,
     FOREIGN KEY (usu_func_id) REFERENCES FUNCIONARIOS(func_id)
 );
 
@@ -157,28 +158,28 @@ VALUES
 -- INSERT USUARIOS
 --===========================
 INSERT INTO USUARIOS
-(usu_func_id, usu_login, usu_senha)
+(usu_func_id, usu_login, usu_senha, usu_ativo)
 VALUES
-(1, 'Carlos', 'Silva'),
-(2, 'Fernanda', 'Costa'),
-(3, 'João', 'Pereira'),
-(4, 'Lucas', 'Andrade'),
-(5, 'Mariana', 'Lima'),
-(6,'Rafaela', 'Souza'),
-(7,'Paulo', 'Henrique'),
-(8, 'Diego', 'Martins'),
-(9, 'Juliana', 'Ramos'),
-(10, 'Amanda', 'Torres'),
-(11, 'Eduardo', 'Nunes'),
-(12, 'Ricardo', 'Gomes'),
-(13, 'Beatriz', 'Santos'),
-(14, 'Tatiane', 'Rocha'),
-(15, 'Guilherme', 'Araújo'),
-(16, 'Patrícia', 'Mendes'),
-(17, 'Henrique', 'Duarte'),
-(18, 'Larissa', 'Teixeira'),
-(19, 'Matheus', 'Lima'),
-(20, 'Bruna', 'Cardoso');
+(1, 'Carlos', 'Silva', 1),
+(2, 'Fernanda', 'Costa', 1),
+(3, 'João', 'Pereira', 1),
+(4, 'Lucas', 'Andrade', 1),
+(5, 'Mariana', 'Lima', 1),
+(6,'Rafaela', 'Souza', 1),
+(7,'Paulo', 'Henrique', 1),
+(8, 'Diego', 'Martins', 1),
+(9, 'Juliana', 'Ramos', 1),
+(10, 'Amanda', 'Torres', 1),
+(11, 'Eduardo', 'Nunes', 1),
+(12, 'Ricardo', 'Gomes', 1),
+(13, 'Beatriz', 'Santos', 1),
+(14, 'Tatiane', 'Rocha', 1),
+(15, 'Guilherme', 'Araújo', 1),
+(16, 'Patrícia', 'Mendes', 1),
+(17, 'Henrique', 'Duarte', 1),
+(18, 'Larissa', 'Teixeira', 1),
+(19, 'Matheus', 'Lima', 1),
+(20, 'Bruna', 'Cardoso', 1);
 
 -- =========================
 -- 5. CARGO_PERMISSOES
@@ -289,8 +290,24 @@ SELECT crg_id, crg_nome FROM CARGOS;
 SELECT prm_id, prm_nome FROM PERMISSOES;
 SELECT set_id, set_nome FROM SETORES;
 SELECT func_id, func_setor_id, func_crg_id, func_nome, func_email, func_ativo, func_data_criacao FROM FUNCIONARIOS;
-SELECT usu_id, usu_func_id, usu_login, usu_senha FROM USUARIOS;
+SELECT usu_id, usu_func_id, usu_login, usu_senha, usu_ativo FROM USUARIOS;
 SELECT crg_id, prm_id, crg_prm_cadastrar, crg_prm_editar, crg_prm_consultar FROM CARGO_PERMISSOES;
 SELECT tar_id, tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_prazo, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto FROM TAREFAS;
 SELECT atr_id, atr_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status FROM ATRIBUICAO_TAREFAS;
 SELECT fot_id, atr_tarefa_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;
+
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER trg_usu_ativo
+AFTER UPDATE ON FUNCIONARIOS
+FOR EACH ROW
+BEGIN
+    UPDATE USUARIOS
+    SET usu_ativo = NEW.func_ativo
+    WHERE usu_func_id = NEW.func_id;
+END $$
+
+DELIMITER ;
