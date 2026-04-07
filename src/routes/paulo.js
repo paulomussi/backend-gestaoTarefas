@@ -14,4 +14,7 @@ router.post('/setores', SetoresController.cadastrarSetores);
 router.patch('/setores/:id', SetoresController.editarSetores);
 router.delete('/setores/:id', SetoresController.apagarSetores);
 
+const LoginController = require('../controllers/usuario');
+
+
 module.exports = router;

@@ -13,9 +13,7 @@ module.exports = {
                 func_setor_id, 
                 func_crg_id, 
                 func_nome, 
-                func_email, 
-                func_login,
-                func_senha, 
+                func_email,             
                 func_ativo = 1 AS func_ativo, 
                 func_data_criacao 
             FROM FUNCIONARIOS
@@ -54,18 +52,17 @@ module.exports = {
             const { setor, cargo, nome, email, login, senha, ativo, data } = request.body;
 
             const sql = `INSERT INTO FUNCIONARIOS 
-                (func_setor_id, func_crg_id, func_nome, func_email, func_login, func_senha, func_ativo, func_data_criacao) 
+                (func_setor_id, func_crg_id, func_nome, func_email, func_ativo, func_data_criacao) 
             VALUES 
-                (?, ?, ?, ?, ?, ?, ?, NOW());`;
+                (?, ?, ?, ?, ?, NOW());`;
 
-            const values = [setor, cargo, nome, email, login, senha, ativo, data];
+            const values = [setor, cargo, nome, email, ativo, data];
             const [result] = await db.query(sql, values);
 
             const dados = {
                 id: result.insertId,
                 nome,
-                email,
-                login,
+                email,                
                 ativo,
                 data_criacao: new Date()
             };
@@ -96,12 +93,12 @@ module.exports = {
 
             const sql = `
                 UPDATE FUNCIONARIOS SET
-                    func_setor_id = ?, func_crg_id = ?, func_nome = ?, func_email = ?, func_login = ?, func_senha = ?, func_ativo =?, func_data_criacao = ?
+                    func_setor_id = ?, func_crg_id = ?, func_nome = ?, func_email = ?, func_ativo =?, func_data_criacao = ?
                 WHERE
                     func_id = ?;
             `;
 
-            const values = [setor, cargo, nome, email, login, senha, ativo, data, id];
+            const values = [setor, cargo, nome, email, ativo, data, id];
 
             const [result] = await db.query(sql, values);
 
@@ -116,8 +113,7 @@ module.exports = {
             const dados = {
                 id,
                 nome,
-                email,
-                login,
+                email,                
                 ativo
             };
 
