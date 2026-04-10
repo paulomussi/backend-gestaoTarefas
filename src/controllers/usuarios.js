@@ -1,7 +1,7 @@
 const db = require("../dataBase/connection.js");
-
+const bcrypt = require ('bcrypt');
 module.exports = {
-  //----------------------LISTAR FUNCIONÁRIOS--------------------------------
+
   async listarUsuarios(request, response) {
     try {
       const sql = `SELECT 
@@ -29,10 +29,13 @@ module.exports = {
       });
     }
   },
-  //---------------------CADASTRAR FUNCIONÁRIOS------------------------------
+
   async cadastrarUsuarios(request, response) {
     try {
       const { funcionario, login, senha, ativo } = request.body;
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(senha, saltRounds);
 
       const sql = `INSERT INTO USUARIOS 
                 (usu_func_id,
@@ -40,22 +43,23 @@ module.exports = {
                  usu_senha,
                  usu_ativo) 
             VALUES 
-                (?, ?, ?)`;
+                (?, ?, ?, ? )`;
 
-      const values = [funcionario, login, senha, ativo];
+      const values = [funcionario, login, hashedPassword, ativo];
+
       const [result] = await db.query(sql, values);
 
-      const dados = {
-        id: result.insertId,
-        login,
-        senha,
-        ativo,
-      };
+      
 
       return response.status(200).json({
         sucesso: true,
         mensagem: "Cadastro de Usúario realizado!",
-        dados: dados,
+        dados : {
+        id: result.insertId,
+        login,
+        hashedPassword,
+        ativo
+      }
       });
     } catch (error) {
       return response.status(500).json({
