@@ -1,7 +1,6 @@
 const db = require("../dataBase/connection.js");
-const bcrypt = require ('bcrypt');
+const bcrypt = require("bcrypt");
 module.exports = {
-
   async listarUsuarios(request, response) {
     try {
       const sql = `SELECT 
@@ -49,17 +48,15 @@ module.exports = {
 
       const [result] = await db.query(sql, values);
 
-      
-
       return response.status(200).json({
         sucesso: true,
         mensagem: "Cadastro de Usúario realizado!",
-        dados : {
-        id: result.insertId,
-        login,
-        hashedPassword,
-        ativo
-      }
+        dados: {
+          id: result.insertId,
+          login,
+          hashedPassword,
+          ativo,
+        },
       });
     } catch (error) {
       return response.status(500).json({

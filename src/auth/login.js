@@ -1,5 +1,6 @@
-const db = require('../database/connection');
-const bcrypt = require('bcrypt');
+const db = require("../database/connection");
+const bcrypt = require("bcrypt");
+const { gerarToken } = require("./jwt");
 
 async function login(req, res) {
   try {
@@ -11,7 +12,7 @@ async function login(req, res) {
     if (rows.length === 0) {
       return res.status(401).json({
         sucesso: false,
-        mensagem: "Usuário não encontrado"
+        mensagem: "Usuário não encontrado",
       });
     }
 
@@ -22,24 +23,27 @@ async function login(req, res) {
     if (!senhaValida) {
       return res.status(401).json({
         sucesso: false,
-        mensagem: "Senha inválida"
+        mensagem: "Senha inválida",
       });
     }
-
+    const token = gerarToken({
+      id: usuario.usu_id,
+      login: usuario.usu_login,
+    });
     return res.status(200).json({
       sucesso: true,
       mensagem: "Login realizado com sucesso",
       dados: {
         id: usuario.usu_id,
-        login: usuario.usu_login
-      }
+        login: usuario.usu_login,
+        token,
+      },
     });
-
   } catch (error) {
     return res.status(500).json({
       sucesso: false,
       mensagem: "Erro no login",
-      dados: error.message
+      dados: error.message,
     });
   }
 }
