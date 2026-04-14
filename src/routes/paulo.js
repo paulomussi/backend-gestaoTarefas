@@ -23,4 +23,9 @@ router.patch("/usuarios/:id", UsuariosController.editarUsuarios);
 
 router.post("/login", LoginController.login);
 
+const { autenticarJWT } = require("../auth/authMiddleware");
+router.get("/teste", autenticarJWT, (req, res) => {
+  res.json({ ok: true, usuario: req.usuario });
+});
+
 module.exports = router;
