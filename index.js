@@ -15,7 +15,7 @@ app.use("/public", express.static("public"));
 
 const porta = process.env.PORT || 3333;
 
-app.listen(porta, () => {
+app.listen(porta, "0.0.0.0",() => {
   console.log(`Servidor iniciado em http://${process.env.SERVER}:${porta}`);
 });
 
