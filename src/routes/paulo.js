@@ -28,4 +28,6 @@ router.get("/teste", autenticarJWT, (req, res) => {
   res.json({ ok: true, usuario: req.usuario });
 });
 
+router.post("/tarefas/:id/aceitar", TarefasController.aceitarTarefa);
+
 module.exports = router;
