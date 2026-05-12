@@ -5,7 +5,7 @@ module.exports = {
   //------------ Listar Tarefas -------------
   async listarTarefas(request, response) {
     try {
-      const { setor, prioridade, exige_foto, responsavel, status, atrasadas } =
+      const { setor, prioridade, exige_foto, responsavel, status } =
         request.query;
 
       let sql = `
@@ -16,7 +16,6 @@ module.exports = {
         t.tar_titulo,
         t.tar_descricao,
         t.tar_prioridade,
-        t.tar_prazo,
         t.tar_estimativa_minutos,
         t.tar_data_criacao,
         t.tar_exige_foto,
@@ -71,10 +70,6 @@ module.exports = {
       if (status) {
         sql += " AND a.atr_status = ? ";
         values.push(status);
-      }
-
-      if (atrasadas == "1") {
-        sql += " AND t.tar_prazo < NOW() ";
       }
 
       sql += " ORDER BY t.tar_id DESC ";

@@ -65,8 +65,7 @@ CREATE TABLE TAREFAS (
     tar_criado_por INT NOT NULL,
     tar_titulo VARCHAR(100) NOT NULL,
     tar_descricao VARCHAR(300) NOT NULL,
-    tar_prioridade TINYINT NOT NULL,
-    tar_prazo DATETIME NOT NULL,    
+    tar_prioridade TINYINT NOT NULL,  
     tar_estimativa_minutos INT NOT NULL,
     tar_data_criacao DATETIME NOT NULL,
     tar_exige_foto BIT,
@@ -217,28 +216,28 @@ INSERT INTO CARGO_PERMISSOES VALUES
 -- =========================
 -- 6. TAREFAS (20 tarefas)
 -- =========================
-INSERT INTO TAREFAS (tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_prazo, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto)
+INSERT INTO TAREFAS (tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade,  tar_estimativa_minutos, tar_data_criacao, tar_exige_foto)
 VALUES
-(3, 1, 'Reposição de produtos de higiene', 'Repor prateleiras de sabonetes e shampoos.', 2, DATE_ADD(NOW(), INTERVAL 1 DAY), 60, NOW(), 0),
-(4, 2, 'Atendimento VIP', 'Atendimento diferenciado a clientes fidelizados.', 3, DATE_ADD(NOW(), INTERVAL 2 DAY), 90, NOW(), 0),
-(5, 1, 'Limpeza do depósito', 'Organizar e limpar depósito de produtos perecíveis.', 1, DATE_ADD(NOW(), INTERVAL 3 DAY), 120, NOW(), 1),
-(3, 2, 'Verificação de validade', 'Checar validade na seção de frios.', 3, DATE_ADD(NOW(), INTERVAL 1 DAY), 45, NOW(), 1),
-(2, 1, 'Conferência de notas fiscais', 'Verificar notas e lançar no sistema.', 2, DATE_ADD(NOW(), INTERVAL 2 DAY), 75, NOW(), 0),
-(6, 2, 'Organizar estoque de bebidas', 'Reorganizar caixas e atualizar planilha.', 2, DATE_ADD(NOW(), INTERVAL 1 DAY), 80, NOW(), 1),
-(3, 1, 'Montar exposição de Natal', 'Criar display de produtos natalinos na entrada.', 3, DATE_ADD(NOW(), INTERVAL 5 DAY), 180, NOW(), 1),
-(7, 1, 'Agendar entrega com fornecedores', 'Confirmar horários de entrega de novos produtos.', 2, DATE_ADD(NOW(), INTERVAL 2 DAY), 60, NOW(), 0),
-(4, 16, 'Treinamento de novos caixas', 'Treinar novos colaboradores no sistema PDV.', 3, DATE_ADD(NOW(), INTERVAL 3 DAY), 120, NOW(), 0),
-(3, 14, 'Organizar setor de hortifrúti', 'Reorganizar frutas e verduras conforme padrão visual.', 2, DATE_ADD(NOW(), INTERVAL 1 DAY), 90, NOW(), 1),
-(6, 13, 'Contagem de estoque geral', 'Inventário mensal completo do estoque.', 3, DATE_ADD(NOW(), INTERVAL 5 DAY), 240, NOW(), 1),
-(5, 10, 'Limpeza das câmaras frias', 'Higienizar câmaras frias com produtos adequados.', 3, DATE_ADD(NOW(), INTERVAL 2 DAY), 180, NOW(), 1),
-(4, 2, 'Atualizar tabela de preços', 'Atualizar valores de acordo com novo reajuste.', 2, DATE_ADD(NOW(), INTERVAL 1 DAY), 70, NOW(), 0),
-(3, 12, 'Verificar etiquetas de preço', 'Conferir etiquetas nas gôndolas.', 1, DATE_ADD(NOW(), INTERVAL 1 DAY), 40, NOW(), 0),
-(7, 9, 'Conferência de entrega pendente', 'Verificar entregas que não foram recebidas.', 2, DATE_ADD(NOW(), INTERVAL 2 DAY), 90, NOW(), 0),
-(5, 18, 'Limpeza do estacionamento', 'Varredura completa do estacionamento.', 1, DATE_ADD(NOW(), INTERVAL 1 DAY), 120, NOW(), 1),
-(6, 8, 'Reposição de estoque noturno', 'Abastecimento noturno do setor de bebidas.', 3, DATE_ADD(NOW(), INTERVAL 1 DAY), 150, NOW(), 1),
-(4, 11, 'Controle de fila nos caixas', 'Reduzir tempo médio de espera.', 2, DATE_ADD(NOW(), INTERVAL 1 DAY), 60, NOW(), 0),
-(2, 14, 'Revisar relatórios financeiros', 'Checar lançamentos e saldos bancários.', 3, DATE_ADD(NOW(), INTERVAL 3 DAY), 180, NOW(), 0),
-(1, 1, 'Auditoria interna mensal', 'Auditoria de processos e conferência de documentos.', 3, DATE_ADD(NOW(), INTERVAL 5 DAY), 300, NOW(), 0);
+(3, 1, 'Reposição de produtos de higiene', 'Repor prateleiras de sabonetes e shampoos.', 2,  60, NOW(), 0),
+(4, 2, 'Atendimento VIP', 'Atendimento diferenciado a clientes fidelizados.', 3,  90, NOW(), 0),
+(5, 1, 'Limpeza do depósito', 'Organizar e limpar depósito de produtos perecíveis.', 1,  120, NOW(), 1),
+(3, 2, 'Verificação de validade', 'Checar validade na seção de frios.', 3,  45, NOW(), 1),
+(2, 1, 'Conferência de notas fiscais', 'Verificar notas e lançar no sistema.', 2,  75, NOW(), 0),
+(6, 2, 'Organizar estoque de bebidas', 'Reorganizar caixas e atualizar planilha.', 2,  80, NOW(), 1),
+(3, 1, 'Montar exposição de Natal', 'Criar display de produtos natalinos na entrada.', 3,  180, NOW(), 1),
+(7, 1, 'Agendar entrega com fornecedores', 'Confirmar horários de entrega de novos produtos.', 2,  60, NOW(), 0),
+(4, 16, 'Treinamento de novos caixas', 'Treinar novos colaboradores no sistema PDV.', 3,  120, NOW(), 0),
+(3, 14, 'Organizar setor de hortifrúti', 'Reorganizar frutas e verduras conforme padrão visual.', 2,  90, NOW(), 1),
+(6, 13, 'Contagem de estoque geral', 'Inventário mensal completo do estoque.', 3,  240, NOW(), 1),
+(5, 10, 'Limpeza das câmaras frias', 'Higienizar câmaras frias com produtos adequados.', 3,  180, NOW(), 1),
+(4, 2, 'Atualizar tabela de preços', 'Atualizar valores de acordo com novo reajuste.', 2,  70, NOW(), 0),
+(3, 12, 'Verificar etiquetas de preço', 'Conferir etiquetas nas gôndolas.', 1,  40, NOW(), 0),
+(7, 9, 'Conferência de entrega pendente', 'Verificar entregas que não foram recebidas.', 2,  90, NOW(), 0),
+(5, 18, 'Limpeza do estacionamento', 'Varredura completa do estacionamento.', 1,  120, NOW(), 1),
+(6, 8, 'Reposição de estoque noturno', 'Abastecimento noturno do setor de bebidas.', 3, 150, NOW(), 1),
+(4, 11, 'Controle de fila nos caixas', 'Reduzir tempo médio de espera.', 2,  60, NOW(), 0),
+(2, 14, 'Revisar relatórios financeiros', 'Checar lançamentos e saldos bancários.', 3,  180, NOW(), 0),
+(1, 1, 'Auditoria interna mensal', 'Auditoria de processos e conferência de documentos.', 3,  300, NOW(), 0);
 
 -- =========================
 -- 7. ATRIBUICAO_TAREFAS
@@ -294,7 +293,7 @@ SELECT usu_id, usu_func_id, usu_login, usu_senha, usu_ativo FROM USUARIOS;
 SELECT crg_id, prm_id, crg_prm_cadastrar, crg_prm_editar, crg_prm_consultar FROM CARGO_PERMISSOES;
 SELECT tar_id, tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_prazo, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto FROM TAREFAS;
 SELECT atr_id, atr_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status FROM ATRIBUICAO_TAREFAS;
-SELECT fot_id, atr_tarefa_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;
+SELECT fot_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;
 
 
 
