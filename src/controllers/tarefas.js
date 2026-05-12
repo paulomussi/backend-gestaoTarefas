@@ -1,7 +1,8 @@
 const db = require("../dataBase/connection");
 
 module.exports = {
-  //------------ Listar Tarefas -------------
+
+
   //------------ Listar Tarefas -------------
   async listarTarefas(request, response) {
     try {
@@ -143,6 +144,14 @@ module.exports = {
         });
       }
 
+      if (titulo.length > 150) {
+        return response.status(400).json({
+          sucesso: false,
+          mensagem: "O título deve ter no máximo 150 caracteres.",
+          dados: null,
+        });
+      }
+
       const sqlTarefa = `
       INSERT INTO TAREFAS 
         (
@@ -151,13 +160,12 @@ module.exports = {
           tar_titulo,
           tar_descricao,
           tar_prioridade,
-          tar_prazo,
           tar_estimativa_minutos,
           tar_data_criacao,
           tar_exige_foto
         )
       VALUES
-        (?, ?, ?, ?, ?, NULL, ?, NOW(), ?);
+        (?, ?, ?, ?, ?, ?, NOW(), ?);
     `;
 
       const valuesTarefa = [
@@ -366,14 +374,14 @@ module.exports = {
 
       // Apagar imagens tarefa
       const sqlVerificaTarefaFoto = `
-                SELECT COUNT(*) AS quantidade FROM tarefa_fotos WHERE atr_tarefa_id = ?
+                SELECT COUNT(*) AS quantidade FROM tarefa_fotos WHERE fot_tarefa_id = ?
             `;
 
       const [verificaTarefaFoto] = await db.query(sqlVerificaTarefaFoto, [id]);
 
       if (verificaTarefaFoto[0].quantidade > 0) {
         const sqlApagarFotosTarefa = `
-                    DELETE FROM tarefa_fotos WHERE atr_tarefa_id = ?
+                    DELETE FROM tarefa_fotos WHERE fot_tarefa_id = ?
                 `;
         await db.query(sqlApagarFotosTarefa, [id]);
       }
