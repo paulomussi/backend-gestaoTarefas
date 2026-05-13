@@ -3,14 +3,15 @@ const bcrypt = require("bcrypt");
 module.exports = {
   async listarUsuarios(request, response) {
     try {
-      const sql = `SELECT 
-                usu_id,
-                usu_func_id,
-                usu_login,
-                usu_senha, 
-                usu_ativo = 1 AS usu_ativo
-            FROM USUARIOS
-            WHERE usu_ativo = 1;`;
+      const sql = `
+      SELECT 
+        usu_id,
+        usu_func_id,
+        usu_login,
+        usu_ativo
+      FROM USUARIOS
+      WHERE usu_ativo = 1;
+    `;
 
       const [usuarios] = await db.query(sql);
 
@@ -23,7 +24,7 @@ module.exports = {
     } catch (error) {
       return response.status(500).json({
         sucesso: false,
-        mensagem: `Erro ao listar Usuários ${error.mensage}`,
+        mensagem: `Erro ao listar Usuários: ${error.message}`,
         dados: null,
       });
     }
@@ -33,53 +34,114 @@ module.exports = {
     try {
       const { funcionario, login, senha, ativo } = request.body;
 
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(senha, saltRounds);
+      if (!funcionario || !login || !senha || ativo === undefined) {
+        return response.status(400).json({
+          sucesso: false,
+          mensagem: "Campos obrigatórios: funcionario, login, senha e ativo.",
+          dados: null,
+        });
+      }
 
-      const sql = `INSERT INTO USUARIOS 
-                (usu_func_id,
-                 usu_login, 
-                 usu_senha,
-                 usu_ativo) 
-            VALUES 
-                (?, ?, ?, ? )`;
+      const sqlVerificarLogin = `
+      SELECT usu_id
+      FROM USUARIOS
+      WHERE usu_login = ?
+      LIMIT 1;
+      `;
+
+      const [loginExistente] = await db.query(sqlVerificarLogin, [login]);
+
+      if (loginExistente.length > 0) {
+        return response.status(409).json({
+          sucesso: false,
+          mensagem: "Este login já está em uso.",
+          dados: null,
+        });
+      }
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(senha, 10);
+
+      const sql = `
+      INSERT INTO USUARIOS 
+        (
+          usu_func_id,
+          usu_login, 
+          usu_senha,
+          usu_ativo
+        ) 
+      VALUES 
+        (?, ?, ?, ?);
+    `;
 
       const values = [funcionario, login, hashedPassword, ativo];
 
       const [result] = await db.query(sql, values);
 
-      return response.status(200).json({
+      return response.status(201).json({
         sucesso: true,
-        mensagem: "Cadastro de Usúario realizado!",
+        mensagem: "Cadastro de usuário realizado!",
         dados: {
           id: result.insertId,
+          funcionario,
           login,
-          hashedPassword,
           ativo,
         },
       });
     } catch (error) {
       return response.status(500).json({
         sucesso: false,
-        mensagem: `Erro ao cadastrar Usúario.`,
+        mensagem: "Erro ao cadastrar usuário.",
         dados: error.message,
       });
     }
   },
+
   async editarUsuarios(request, response) {
     try {
       const { login, senha, ativo } = request.body;
-
       const { id } = request.params;
 
-      const sql = `
-                UPDATE USUARIOS SET
-                    usu_login = ?, usu_senha = ?, usu_ativo = ?
-                WHERE 
-                    usu_id = ?
-            `;
+      if (!login || ativo === undefined) {
+        return response.status(400).json({
+          sucesso: false,
+          mensagem: "Campos obrigatórios: login e ativo.",
+          dados: null,
+        });
+      }
 
-      const values = [login, senha, ativo, id];
+      let sql;
+      let values;
+
+      /*
+        Se veio uma nova senha, criptografa e atualiza a senha.
+        Se não veio senha, mantém a senha antiga.
+      */
+      if (senha && senha.trim() !== "") {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(senha, saltRounds);
+
+        sql = `
+        UPDATE USUARIOS SET
+          usu_login = ?,
+          usu_senha = ?,
+          usu_ativo = ?
+        WHERE 
+          usu_id = ?;
+      `;
+
+        values = [login, hashedPassword, ativo, id];
+      } else {
+        sql = `
+        UPDATE USUARIOS SET
+          usu_login = ?,
+          usu_ativo = ?
+        WHERE 
+          usu_id = ?;
+      `;
+
+        values = [login, ativo, id];
+      }
 
       const [result] = await db.query(sql, values);
 
@@ -91,22 +153,19 @@ module.exports = {
         });
       }
 
-      const dados = {
-        id,
-        login,
-        senha,
-        ativo,
-      };
-
       return response.status(200).json({
         sucesso: true,
         mensagem: `Usuário ${id} atualizado!`,
-        dados,
+        dados: {
+          id,
+          login,
+          ativo,
+        },
       });
     } catch (error) {
       return response.status(500).json({
         sucesso: false,
-        mensagem: `Erro ao editar Usuário.`,
+        mensagem: "Erro ao editar usuário.",
         dados: error.message,
       });
     }

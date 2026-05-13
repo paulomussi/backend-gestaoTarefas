@@ -3,34 +3,40 @@ const db = require('../dataBase/connection')
 module.exports = {
     async listarCargoPermissoes(request, response) {
         try {
-
             const sql = `
-        SELECT
-            crg_id = 1 AS crg_id, prm_id = 1 AS prm_id, crg_prm_cadastrar = 1 AS crg_prm_cadastrar, crg_prm_editar = 1 AS crg_prm_editar, crg_prm_consultar = 1 AS crg_prm_consultar
-        FROM CARGO_PERMISSOES;
-        `;
+      SELECT
+        cp.crg_id,
+        c.crg_nome,
+        cp.prm_id,
+        p.prm_nome,
+        cp.crg_prm_cadastrar,
+        cp.crg_prm_editar,
+        cp.crg_prm_consultar
+      FROM CARGO_PERMISSOES cp
+      INNER JOIN CARGOS c
+        ON c.crg_id = cp.crg_id
+      INNER JOIN PERMISSOES p
+        ON p.prm_id = cp.prm_id
+      ORDER BY cp.crg_id, cp.prm_id;
+    `;
 
             const [cargopermissoes] = await db.query(sql);
 
-            return response.status(200).json(
-                {
-                    sucesso: true,
-                    mensagem: 'Lista de Permissões de Cargos obtida com sucesso',
-                    itens: cargopermissoes.length,
-                    dados: cargopermissoes
-                }
-            );
+            return response.status(200).json({
+                sucesso: true,
+                mensagem: "Lista de Permissões de Cargos obtida com sucesso",
+                itens: cargopermissoes.length,
+                dados: cargopermissoes,
+            });
         } catch (error) {
-            return response.status(500).json(
-                {
-                    sucesso: false,
-                    mensagem: `Erro ao listar Permissões dos Cargos: ${error.message}`,
-                    dados: null
-                }
-            );
+            return response.status(500).json({
+                sucesso: false,
+                mensagem: `Erro ao listar Permissões dos Cargos: ${error.message}`,
+                dados: null,
+            });
         }
     },
-
+    
     // ------------ Cadastrar Permissões de Cargo -------------
 
     async cadastrarCargoPermissoes(request, response) {
@@ -146,22 +152,22 @@ module.exports = {
                     mensagem: `Permissão não encontrada para esse cargo`
                 });
             }
-                return response.status(200).json(
-                    {
-                        sucesso: true,
-                        mensagem: 'Exclusão de Permissões de Cargos efetuada com sucesso',
-                        dados: null
-                    }
-                );
-            } catch (error) {
-                return response.status(500).json(
-                    {
-                        sucesso: false,
-                        mensagem: `Erro ao Excluir Permissoes de C argos: ${error.message}`,
-                        dados: null
-                    }
-                );
-            }
-        },
-    }
+            return response.status(200).json(
+                {
+                    sucesso: true,
+                    mensagem: 'Exclusão de Permissões de Cargos efetuada com sucesso',
+                    dados: null
+                }
+            );
+        } catch (error) {
+            return response.status(500).json(
+                {
+                    sucesso: false,
+                    mensagem: `Erro ao Excluir Permissoes de C argos: ${error.message}`,
+                    dados: null
+                }
+            );
+        }
+    },
+}
 

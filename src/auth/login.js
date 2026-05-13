@@ -6,43 +6,132 @@ async function login(req, res) {
   try {
     const { login, senha } = req.body;
 
-    const sql = `SELECT * FROM USUARIOS WHERE usu_login = ?`;
-    const [rows] = await db.query(sql, [login]);
+    if (!login || !senha) {
+      return res.status(400).json({
+        sucesso: false,
+        mensagem: "Login e senha são obrigatórios.",
+        dados: null,
+      });
+    }
+
+    const sqlUsuario = `
+      SELECT 
+        u.usu_id,
+        u.usu_func_id,
+        u.usu_login,
+        u.usu_senha,
+        CAST(u.usu_ativo AS UNSIGNED) AS usu_ativo,
+
+        f.func_id,
+        f.func_nome,
+        f.func_email,
+        f.func_crg_id,
+
+        c.crg_nome
+      FROM USUARIOS u
+      INNER JOIN FUNCIONARIOS f
+        ON f.func_id = u.usu_func_id
+      INNER JOIN CARGOS c
+        ON c.crg_id = f.func_crg_id
+      WHERE u.usu_login = ?
+      LIMIT 1;
+    `;
+
+    const [rows] = await db.query(sqlUsuario, [login]);
 
     if (rows.length === 0) {
       return res.status(401).json({
         sucesso: false,
-        mensagem: "Usuário não encontrado",
+        mensagem: "Usuário não encontrado.",
+        dados: null,
       });
     }
 
-    const usuario = rows[0];
+    const usuarioBanco = rows[0];
 
-    const senhaValida = await bcrypt.compare(senha, usuario.usu_senha);
+    
+    if (Number(usuarioBanco.usu_ativo) !== 1) {
+      return res.status(403).json({
+        sucesso: false,
+        mensagem: "Usuário inativo.",
+        dados: null,
+      });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, usuarioBanco.usu_senha);
 
     if (!senhaValida) {
       return res.status(401).json({
         sucesso: false,
-        mensagem: "Senha inválida",
+        mensagem: "Senha inválida.",
+        dados: null,
       });
     }
+
+    const sqlPermissoes = `
+      SELECT
+        cp.crg_id,
+        cp.prm_id,
+        CAST(cp.crg_prm_cadastrar AS UNSIGNED) AS crg_prm_cadastrar,
+        CAST(cp.crg_prm_editar AS UNSIGNED) AS crg_prm_editar,
+        CAST(cp.crg_prm_consultar AS UNSIGNED) AS crg_prm_consultar
+      FROM CARGO_PERMISSOES cp
+      WHERE cp.crg_id = ?;
+    `;
+
+    const [permissoes] = await db.query(sqlPermissoes, [
+      usuarioBanco.func_crg_id,
+    ]);
+
+    const podeAdministrar = permissoes.some(
+      (permissao) =>
+        Number(permissao.crg_prm_cadastrar) === 1 ||
+        Number(permissao.crg_prm_editar) === 1
+    );
+
+    const podeConsultar = permissoes.some(
+      (permissao) => Number(permissao.crg_prm_consultar) === 1
+    );
+
+    const tipo = podeAdministrar ? "admin" : "funcionario";
+
+
+    const usuario = {
+      id: usuarioBanco.usu_id,
+      funcionarioId: usuarioBanco.func_id,
+      nome: usuarioBanco.func_nome,
+      login: usuarioBanco.usu_login,
+      email: usuarioBanco.func_email,
+      cargoId: usuarioBanco.func_crg_id,
+      cargo: usuarioBanco.crg_nome,
+      tipo,
+      podeAdministrar,
+      podeConsultar,
+      permissoes,
+    };
+
     const token = gerarToken({
-      id: usuario.usu_id,
-      login: usuario.usu_login,
+      id: usuario.id,
+      funcionarioId: usuario.funcionarioId,
+      login: usuario.login,
+      tipo: usuario.tipo,
+      cargoId: usuario.cargoId,
     });
+
     return res.status(200).json({
       sucesso: true,
-      mensagem: "Login realizado com sucesso",
+      mensagem: "Login realizado com sucesso.",
       dados: {
-        id: usuario.usu_id,
-        login: usuario.usu_login,
+        usuario,
         token,
       },
     });
   } catch (error) {
+    console.error("Erro no login:", error);
+
     return res.status(500).json({
       sucesso: false,
-      mensagem: "Erro no login",
+      mensagem: "Erro no login.",
       dados: error.message,
     });
   }

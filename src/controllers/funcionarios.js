@@ -87,7 +87,14 @@ module.exports = {
       return response.status(201).json({
         sucesso: true,
         mensagem: "Cadastro de funcionário realizado com sucesso!",
-        dados,
+        dados: {
+          id: result.insertId,
+          nome,
+          email,
+          setor,
+          cargo,
+          ativo,
+        },
       });
     } catch (error) {
       return response.status(500).json({
