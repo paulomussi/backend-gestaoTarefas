@@ -4,8 +4,8 @@ const router = express.Router();
 const TarefasController = require("../controllers/tarefas");
 const SetoresController = require("../controllers/setores");
 const UsuariosController = require("../controllers/usuarios");
-
 const LoginController = require("../auth/login");
+const { autenticarJWT } = require("../auth/authMiddleware");
 
 router.get("/tarefas", TarefasController.listarTarefas);
 router.post("/tarefas", TarefasController.cadastrarTarefas);
@@ -21,9 +21,15 @@ router.get("/usuarios", UsuariosController.listarUsuarios);
 router.post("/usuarios", UsuariosController.cadastrarUsuarios);
 router.patch("/usuarios/:id", UsuariosController.editarUsuarios);
 
+
 router.post("/login", LoginController.login);
 
-const { autenticarJWT } = require("../auth/authMiddleware");
+router.get(
+  "/auth/verificar-sessao",
+  autenticarJWT,
+  LoginController.verificarSessao,
+);
+
 router.get("/teste", autenticarJWT, (req, res) => {
   res.json({ ok: true, usuario: req.usuario });
 });

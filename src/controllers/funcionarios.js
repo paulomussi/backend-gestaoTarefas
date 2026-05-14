@@ -163,6 +163,14 @@ module.exports = {
 
       const [result] = await db.query(sql, values);
 
+      const sqlAtualizarUsuario = `
+        UPDATE USUARIOS
+        SET usu_ativo = ?
+        WHERE usu_func_id = ?;
+      `;
+
+      await db.query(sqlAtualizarUsuario, [ativo, id]);
+
       if (result.affectedRows === 0) {
         return response.status(404).json({
           sucesso: false,

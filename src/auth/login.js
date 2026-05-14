@@ -49,7 +49,6 @@ async function login(req, res) {
 
     const usuarioBanco = rows[0];
 
-    
     if (Number(usuarioBanco.usu_ativo) !== 1) {
       return res.status(403).json({
         sucesso: false,
@@ -86,15 +85,14 @@ async function login(req, res) {
     const podeAdministrar = permissoes.some(
       (permissao) =>
         Number(permissao.crg_prm_cadastrar) === 1 ||
-        Number(permissao.crg_prm_editar) === 1
+        Number(permissao.crg_prm_editar) === 1,
     );
 
     const podeConsultar = permissoes.some(
-      (permissao) => Number(permissao.crg_prm_consultar) === 1
+      (permissao) => Number(permissao.crg_prm_consultar) === 1,
     );
 
     const tipo = podeAdministrar ? "admin" : "funcionario";
-
 
     const usuario = {
       id: usuarioBanco.usu_id,
@@ -137,4 +135,68 @@ async function login(req, res) {
   }
 }
 
-module.exports = { login };
+async function verificarSessao(req, res) {
+  try {
+    const { funcionarioId } = req.usuario;
+
+    if (!funcionarioId) {
+      return res.status(401).json({
+        sucesso: false,
+        mensagem: "Token inválido.",
+        dados: null,
+      });
+    }
+
+    const sql = `
+      SELECT 
+        f.func_id,
+        CAST(f.func_ativo AS UNSIGNED) AS func_ativo,
+        CAST(u.usu_ativo AS UNSIGNED) AS usu_ativo
+      FROM FUNCIONARIOS f
+      INNER JOIN USUARIOS u
+        ON u.usu_func_id = f.func_id
+      WHERE f.func_id = ?
+      LIMIT 1;
+    `;
+
+    const [rows] = await db.query(sql, [funcionarioId]);
+
+    if (rows.length === 0) {
+      return res.status(401).json({
+        sucesso: false,
+        mensagem: "Usuário não encontrado.",
+        dados: null,
+      });
+    }
+
+    const usuario = rows[0];
+
+    const ativo =
+      Number(usuario.func_ativo) === 1 && Number(usuario.usu_ativo) === 1;
+
+    if (!ativo) {
+      return res.status(403).json({
+        sucesso: false,
+        mensagem: "Usuário inativo.",
+        dados: null,
+      });
+    }
+
+    return res.status(200).json({
+      sucesso: true,
+      mensagem: "Sessão válida.",
+      dados: {
+        ativo: true,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      sucesso: false,
+      mensagem: "Erro ao verificar sessão.",
+      dados: error.message,
+    });
+  }
+}
+
+module.exports = { login, verificarSessao };
+
