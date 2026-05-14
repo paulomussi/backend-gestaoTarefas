@@ -23,15 +23,24 @@ async function login(req, res) {
         CAST(u.usu_ativo AS UNSIGNED) AS usu_ativo,
 
         f.func_id,
+        f.func_setor_id,
         f.func_nome,
         f.func_email,
+        f.func_foto,
         f.func_crg_id,
 
+<<<<<<< Updated upstream
         c.crg_nome,
         s.set_nome
+=======
+        s.set_nome AS func_setor_nome,
+        c.crg_nome
+>>>>>>> Stashed changes
       FROM USUARIOS u
       INNER JOIN FUNCIONARIOS f
         ON f.func_id = u.usu_func_id
+      INNER JOIN SETORES s
+        ON s.set_id = f.func_setor_id
       INNER JOIN CARGOS c
         ON c.crg_id = f.func_crg_id
         INNER JOIN SETORES s
@@ -60,7 +69,23 @@ async function login(req, res) {
       });
     }
 
-    const senhaValida = await bcrypt.compare(senha, usuarioBanco.usu_senha);
+    const isHashedPassword = /^\$2[aby]\$\d{2}\$/.test(usuarioBanco.usu_senha);
+
+    let senhaValida = false;
+
+    if (isHashedPassword) {
+      senhaValida = await bcrypt.compare(senha, usuarioBanco.usu_senha);
+    } else {
+      senhaValida = senha === usuarioBanco.usu_senha;
+
+      if (senhaValida) {
+        const hashedPassword = await bcrypt.hash(senha, 10);
+        await db.query("UPDATE USUARIOS SET usu_senha = ? WHERE usu_id = ?", [
+          hashedPassword,
+          usuarioBanco.usu_id,
+        ]);
+      }
+    }
 
     if (!senhaValida) {
       return res.status(401).json({
@@ -104,6 +129,7 @@ async function login(req, res) {
       nome: usuarioBanco.func_nome,
       login: usuarioBanco.usu_login,
       email: usuarioBanco.func_email,
+<<<<<<< Updated upstream
 
       setorId: usuarioBanco.func_setor_id,
       setor: usuarioBanco.set_nome,
@@ -111,6 +137,15 @@ async function login(req, res) {
       cargoId: usuarioBanco.func_crg_id,
       cargo: usuarioBanco.crg_nome,
 
+=======
+      setorId: usuarioBanco.func_setor_id,
+      setor: usuarioBanco.func_setor_nome,
+      cargoId: usuarioBanco.func_crg_id,
+      cargo: usuarioBanco.crg_nome,
+      avatar: usuarioBanco.func_foto
+        ? `${req.protocol}://${req.get("host")}/uploads/usuarios/${usuarioBanco.func_foto}`
+        : null,
+>>>>>>> Stashed changes
       tipo,
       podeAdministrar,
       podeConsultar,

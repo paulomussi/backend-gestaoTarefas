@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const router = require("./src/routes/routes");
 
@@ -10,8 +11,12 @@ app.use(cors());
 app.use(express.json());
 app.use(router);
 
-//tornar a pasta public acessível externamente
-app.use("/public", express.static("public"));
+// tornar a pasta public acessível externamente
+app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "src", "uploads")),
+);
 
 const porta = process.env.PORT || 3333;
 

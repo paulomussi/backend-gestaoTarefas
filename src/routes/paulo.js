@@ -6,6 +6,8 @@ const SetoresController = require("../controllers/setores");
 const UsuariosController = require("../controllers/usuarios");
 const LoginController = require("../auth/login");
 const { autenticarJWT } = require("../auth/authMiddleware");
+const uploadImage = require("../middleware/uploadHelper");
+const upload = uploadImage("usuarios");
 
 router.get("/tarefas", TarefasController.listarTarefas);
 router.post("/tarefas", TarefasController.cadastrarTarefas);
@@ -29,6 +31,15 @@ router.get(
   autenticarJWT,
   LoginController.verificarSessao,
 );
+
+router.post(
+  "/usuario/foto",
+  autenticarJWT,
+  upload.single("foto"),
+  UsuariosController.uploadFotoPerfil,
+);
+
+router.get("/usuario/me", autenticarJWT, UsuariosController.obterUsuarioLogado);
 
 router.get("/teste", autenticarJWT, (req, res) => {
   res.json({ ok: true, usuario: req.usuario });

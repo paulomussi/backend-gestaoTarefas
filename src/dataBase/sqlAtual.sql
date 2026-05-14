@@ -33,6 +33,7 @@ CREATE TABLE FUNCIONARIOS (
     func_crg_id INT NOT NULL,
     func_nome VARCHAR(60) NOT NULL,
     func_email VARCHAR(80) UNIQUE NOT NULL,
+    func_foto VARCHAR(255) DEFAULT NULL,
     func_ativo BIT NOT NULL,
     func_data_criacao DATETIME NOT NULL,
     FOREIGN KEY (func_setor_id) REFERENCES SETORES(set_id),
@@ -130,28 +131,28 @@ INSERT INTO SETORES (set_nome) VALUES
 -- 4. FUNCIONÁRIOS (20 funcionários)
 -- =========================
 INSERT INTO FUNCIONARIOS 
-(func_setor_id, func_crg_id, func_nome, func_email, func_ativo, func_data_criacao)
+(func_setor_id, func_crg_id, func_nome, func_email, func_foto, func_ativo, func_data_criacao)
 VALUES
-(1, 1, 'Carlos Silva', 'carlos.silva@mercadobom.com', 1, NOW()),
-(2, 2, 'Fernanda Costa', 'fernanda.costa@mercadobom.com', 1, NOW()),
-(4, 3, 'João Pereira', 'joao.pereira@mercadobom.com', 1, NOW()),
-(3, 4, 'Lucas Andrade', 'lucas.andrade@mercadobom.com', 1, NOW()),
-(5, 5, 'Mariana Lima', 'mariana.lima@mercadobom.com', 1, NOW()),
-(3, 4, 'Rafaela Souza', 'rafaela.souza@mercadobom.com', 1, NOW()),
-(4, 3, 'Paulo Henrique', 'paulo.henrique@mercadobom.com', 1, NOW()),
-(6, 4, 'Diego Martins', 'diego.martins@mercadobom.com', 1, NOW()),
-(7, 4, 'Juliana Ramos', 'juliana.ramos@mercadobom.com', 1, NOW()),
-(5, 5, 'Amanda Torres', 'amanda.torres@mercadobom.com', 1, NOW()),
-(4, 3, 'Eduardo Nunes', 'eduardo.nunes@mercadobom.com', 1, NOW()),
-(3, 4, 'Ricardo Gomes', 'ricardo.gomes@mercadobom.com', 1, NOW()),
-(6, 4, 'Beatriz Santos', 'beatriz.santos@mercadobom.com', 1, NOW()),
-(2, 2, 'Tatiane Rocha', 'tatiane.rocha@mercadobom.com', 1, NOW()),
-(7, 4, 'Guilherme Araújo', 'guilherme.araujo@mercadobom.com', 1, NOW()),
-(1, 2, 'Patrícia Mendes', 'patricia.mendes@mercadobom.com', 1, NOW()),
-(6, 4, 'Henrique Duarte', 'henrique.duarte@mercadobom.com', 1, NOW()),
-(5, 5, 'Larissa Teixeira', 'larissa.teixeira@mercadobom.com', 1, NOW()),
-(3, 4, 'Matheus Lima', 'matheus.lima@mercadobom.com', 1, NOW()),
-(7, 4, 'Bruna Cardoso', 'bruna.cardoso@mercadobom.com', 1, NOW());
+(1, 1, 'Carlos Silva', 'carlos.silva@mercadobom.com', NULL, 1, NOW()),
+(2, 2, 'Fernanda Costa', 'fernanda.costa@mercadobom.com', NULL, 1, NOW()),
+(4, 3, 'João Pereira', 'joao.pereira@mercadobom.com', NULL, 1, NOW()),
+(3, 4, 'Lucas Andrade', 'lucas.andrade@mercadobom.com', NULL, 1, NOW()),
+(5, 5, 'Mariana Lima', 'mariana.lima@mercadobom.com', NULL, 1, NOW()),
+(3, 4, 'Rafaela Souza', 'rafaela.souza@mercadobom.com', NULL, 1, NOW()),
+(4, 3, 'Paulo Henrique', 'paulo.henrique@mercadobom.com', NULL, 1, NOW()),
+(6, 4, 'Diego Martins', 'diego.martins@mercadobom.com', NULL, 1, NOW()),
+(7, 4, 'Juliana Ramos', 'juliana.ramos@mercadobom.com', NULL, 1, NOW()),
+(5, 5, 'Amanda Torres', 'amanda.torres@mercadobom.com', NULL, 1, NOW()),
+(4, 3, 'Eduardo Nunes', 'eduardo.nunes@mercadobom.com', NULL, 1, NOW()),
+(3, 4, 'Ricardo Gomes', 'ricardo.gomes@mercadobom.com', NULL, 1, NOW()),
+(6, 4, 'Beatriz Santos', 'beatriz.santos@mercadobom.com', NULL, 1, NOW()),
+(2, 2, 'Tatiane Rocha', 'tatiane.rocha@mercadobom.com', NULL, 1, NOW()),
+(7, 4, 'Guilherme Araújo', 'guilherme.araujo@mercadobom.com', NULL, 1, NOW()),
+(1, 2, 'Patrícia Mendes', 'patricia.mendes@mercadobom.com', NULL, 1, NOW()),
+(6, 4, 'Henrique Duarte', 'henrique.duarte@mercadobom.com', NULL, 1, NOW()),
+(5, 5, 'Larissa Teixeira', 'larissa.teixeira@mercadobom.com', NULL, 1, NOW()),
+(3, 4, 'Matheus Lima', 'matheus.lima@mercadobom.com', NULL, 1, NOW()),
+(7, 4, 'Bruna Cardoso', 'bruna.cardoso@mercadobom.com', NULL, 1, NOW());
 
 --===========================
 -- INSERT USUARIOS
@@ -288,10 +289,10 @@ VALUES
 SELECT crg_id, crg_nome FROM CARGOS;
 SELECT prm_id, prm_nome FROM PERMISSOES;
 SELECT set_id, set_nome FROM SETORES;
-SELECT func_id, func_setor_id, func_crg_id, func_nome, func_email, func_ativo, func_data_criacao FROM FUNCIONARIOS;
+SELECT func_id, func_setor_id, func_crg_id, func_nome, func_email, func_foto, func_ativo, func_data_criacao FROM FUNCIONARIOS;
 SELECT usu_id, usu_func_id, usu_login, usu_senha, usu_ativo FROM USUARIOS;
 SELECT crg_id, prm_id, crg_prm_cadastrar, crg_prm_editar, crg_prm_consultar FROM CARGO_PERMISSOES;
-SELECT tar_id, tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_prazo, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto FROM TAREFAS;
+SELECT tar_id, tar_setor_id, tar_criado_por, tar_titulo, tar_descricao, tar_prioridade, tar_estimativa_minutos, tar_data_criacao, tar_exige_foto FROM TAREFAS;
 SELECT atr_id, atr_tarefa_id, atr_funcionario_id, atr_data_atribuicao, atr_status FROM ATRIBUICAO_TAREFAS;
 SELECT fot_id, fot_nome, fot_descricao, fot_data_envio FROM TAREFA_FOTOS;
 
