@@ -14,6 +14,12 @@ router.post("/tarefas", TarefasController.cadastrarTarefas);
 router.patch("/tarefas/:id", TarefasController.editarTarefas);
 router.delete("/tarefas/:id", TarefasController.apagarTarefas);
 
+router.get(
+  "/minhas-tarefas/verificar",
+  autenticarJWT,
+  TarefasController.verificarTarefasFuncionario
+);
+
 router.get("/setores", SetoresController.listarSetores);
 router.post("/setores", SetoresController.cadastrarSetores);
 router.patch("/setores/:id", SetoresController.editarSetores);
@@ -39,7 +45,9 @@ router.post(
   UsuariosController.uploadFotoPerfil,
 );
 
-router.get("/usuario/me", autenticarJWT, UsuariosController.obterUsuarioLogado);
+router.get("/usuario/me",
+   autenticarJWT, 
+   UsuariosController.obterUsuarioLogado);
 
 router.get("/teste", autenticarJWT, (req, res) => {
   res.json({ ok: true, usuario: req.usuario });

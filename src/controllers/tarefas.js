@@ -1,8 +1,6 @@
 const db = require("../dataBase/connection");
 
 module.exports = {
-
-
   //------------ Listar Tarefas -------------
   async listarTarefas(request, response) {
     try {
@@ -504,6 +502,60 @@ module.exports = {
       return response.status(500).json({
         sucesso: false,
         mensagem: "Erro ao aceitar tarefa.",
+        dados: error.message,
+      });
+    }
+  },
+
+  // ------------ Verificar tarefas do funcionário logado -------------
+  async verificarTarefasFuncionario(request, response) {
+    try {
+      const { funcionarioId } = request.usuario;
+
+      if (!funcionarioId) {
+        return response.status(401).json({
+          sucesso: false,
+          mensagem: "Token inválido. Funcionário não encontrado.",
+          dados: null,
+        });
+      }
+
+      const sql = `
+      SELECT
+        t.tar_id,
+        t.tar_titulo,
+        t.tar_descricao,
+        t.tar_prioridade,
+        t.tar_estimativa_minutos,
+        t.tar_data_criacao,
+        t.tar_setor_id,
+
+        a.atr_id,
+        a.atr_funcionario_id,
+        CAST(a.atr_status AS UNSIGNED) AS atr_status,
+
+        s.set_nome
+      FROM ATRIBUICAO_TAREFAS a
+      INNER JOIN TAREFAS t
+        ON t.tar_id = a.atr_tarefa_id
+      LEFT JOIN SETORES s
+        ON s.set_id = t.tar_setor_id
+      WHERE a.atr_funcionario_id = ?
+      ORDER BY t.tar_id DESC;
+    `;
+
+      const [tarefas] = await db.query(sql, [funcionarioId]);
+
+      return response.status(200).json({
+        sucesso: true,
+        mensagem: "Tarefas do funcionário verificadas com sucesso.",
+        items: tarefas.length,
+        dados: tarefas,
+      });
+    } catch (error) {
+      return response.status(500).json({
+        sucesso: false,
+        mensagem: "Erro ao verificar tarefas do funcionário.",
         dados: error.message,
       });
     }
