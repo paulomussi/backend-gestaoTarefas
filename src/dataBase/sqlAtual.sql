@@ -181,6 +181,32 @@ VALUES
 (19, 'Matheus', 'Lima', 1),
 (20, 'Bruna', 'Cardoso', 1);
 
+
+--INSERT TESTE COM SENHAS HASHED (bcrypt)
+INSERT INTO USUARIOS
+(usu_func_id, usu_login, usu_senha, usu_ativo)
+VALUES
+(1, 'Carlos', '$2b$10$SPFQndJxd7eyJ7aHkMDFYeY05jyi50vye6vThNY.hAM6YBNgt5sku', 1),
+(2, 'Fernanda', '$2b$10$/H4NsesokJAWSvg.gXwnhenI1KTJSSDI4V9bpyXRrvdz69zXrk19i', 1),
+(3, 'João', '$2b$10$HiA8.UCqEeoPVwuHY7F6DeyCgRCWJ4er1.MATvAjXj8YLDn4y1LVu', 1),
+(4, 'Lucas', '$2b$10$V8r6enTjdn2QmrWr/t3oNOliVjHUQUILz74Mq3Mih3hbRbz/Nu.ru', 1),
+(5, 'Mariana', '$2b$10$3Fvj1rW1IbSeDUz0I7kDeekKVWBYJp2CMsRIRg9G3YRWrK/hyWv.m', 1),
+(6, 'Rafaela', '$2b$10$TXatnbiYKSr8uRQGx.3uzud9FcjjtnQaKdQMkNAiSxEQuRFus1jci', 1),
+(7, 'Paulo', '$2b$10$EPrpkzSQrLWAP/AptdXE1OYsd58lo.GbrT/li0BG02x4.AKH6sc8e', 1),
+(8, 'Diego', '$2b$10$n2K0HPsUhq3mz0qLso/BceZhf5WEKq.S.NWdvm0PfCeE2gVZ8hQYG', 1),
+(9, 'Juliana', '$2b$10$cumjXvof8cgBYQVmjBK1KeCISNDyIGPH38.TjsbDaXKVI2azX/wN2', 1),
+(10, 'Amanda', '$2b$10$gR2CmGYlIZA0oz8e28/Qf.Aa.MfmF0yXt/.i1wHcqj1dQzBp8Z/ru', 1),
+(11, 'Eduardo', '$2b$10$Pxde9G18nbpPVAuLLV4o5e2/CjvIpdzYXqpDdw4niUHnE4rQXupx6', 1),
+(12, 'Ricardo', '$2b$10$1g1LRAN3ZOR/nI7uSvrte.k7YKK3g4L87x5W0N15EPKNWD15EaRBi', 1),
+(13, 'Beatriz', '$2b$10$3MJK3BNlx4.K.2S/7GgHeezLRcDlFUZj32WsbF6BA2tgk6WIAlPDm', 1),
+(14, 'Tatiane', '$2b$10$IvPl0lHXleyKjcmFtlknE.e9yFywYufC0a2/5.PM0Jx9G3w64bt1G', 1),
+(15, 'Guilherme', '$2b$10$T6g2PmjOUQKqWwUAZUXsF.3BhJKiTioRZy/lHsb.xASfdX172W8iy', 1),
+(16, 'Patrícia', '$2b$10$LCO.wHAUCtdQu2Y08NbuE.tl7bJum6TQHKAVNdz0BtotvQP4DkfOW', 1),
+(17, 'Henrique', '$2b$10$wus43dpat9tV8ef6drVaLOYma26VbaX/k.GDLvulLPkHunGVZBSrW', 1),
+(18, 'Larissa', '$2b$10$RHMhRoJ2U05XjruFw9Fca.3xK5sMNM.Z1to1kni5ZsVzcHsuZJ7lm', 1),
+(19, 'Matheus', '$2b$10$yVldfiq/oE5IH4ts9wREI.heQpl/ol/c5Mudjv9t0MOcicP12bUim', 1),
+(20, 'Bruna', '$2b$10$RDnH8wLW/4scAhRC9af6WeGA.R3vg41sbPfGzOxEMxSMhE3cpkkYm', 1);
+
 -- =========================
 -- 5. CARGO_PERMISSOES
 -- =========================
