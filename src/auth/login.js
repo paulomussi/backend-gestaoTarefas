@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require("../dataBase/connection");
 const bcrypt = require("bcrypt");
 const { gerarToken } = require("./jwt");
 
@@ -28,14 +28,8 @@ async function login(req, res) {
         f.func_email,
         f.func_foto,
         f.func_crg_id,
-
-<<<<<<< Updated upstream
         c.crg_nome,
-        s.set_nome
-=======
-        s.set_nome AS func_setor_nome,
-        c.crg_nome
->>>>>>> Stashed changes
+        s.set_nome AS func_setor_nome
       FROM USUARIOS u
       INNER JOIN FUNCIONARIOS f
         ON f.func_id = u.usu_func_id
@@ -43,8 +37,6 @@ async function login(req, res) {
         ON s.set_id = f.func_setor_id
       INNER JOIN CARGOS c
         ON c.crg_id = f.func_crg_id
-        INNER JOIN SETORES s
-        ON s.set_id = f.func_setor_id
       WHERE u.usu_login = ?
       LIMIT 1;
     `;
@@ -129,15 +121,6 @@ async function login(req, res) {
       nome: usuarioBanco.func_nome,
       login: usuarioBanco.usu_login,
       email: usuarioBanco.func_email,
-<<<<<<< Updated upstream
-
-      setorId: usuarioBanco.func_setor_id,
-      setor: usuarioBanco.set_nome,
-
-      cargoId: usuarioBanco.func_crg_id,
-      cargo: usuarioBanco.crg_nome,
-
-=======
       setorId: usuarioBanco.func_setor_id,
       setor: usuarioBanco.func_setor_nome,
       cargoId: usuarioBanco.func_crg_id,
@@ -145,7 +128,6 @@ async function login(req, res) {
       avatar: usuarioBanco.func_foto
         ? `${req.protocol}://${req.get("host")}/uploads/usuarios/${usuarioBanco.func_foto}`
         : null,
->>>>>>> Stashed changes
       tipo,
       podeAdministrar,
       podeConsultar,

@@ -19,9 +19,10 @@ app.use(
 );
 
 const porta = process.env.PORT || 3333;
+const serverHost = process.env.SERVER || "localhost";
 
-app.listen(porta, "0.0.0.0",() => {
-  console.log(`Servidor iniciado em http://${process.env.SERVER}:${porta}`);
+app.listen(porta, "0.0.0.0", () => {
+  console.log(`Servidor iniciado em http://${serverHost}:${porta}`);
 });
 
 app.get("/", (request, response) => {
