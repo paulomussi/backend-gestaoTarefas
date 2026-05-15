@@ -1,0 +1,8 @@
+MYSQLHOST:  mysql.railway.internal
+MYSQLUSER:  root
+MYSQLPASSWORD:  zXupVchwIinIzIBWCdOeuQaMIyoZOSMd
+MYSQLDATABASE:  railway
+MYSQLPORT:  3306
+
+
+mysql://root:zXupVchwIinIzIBWCdOeuQaMIyoZOSMd@yamanote.proxy.rlwy.net:48208/railway
