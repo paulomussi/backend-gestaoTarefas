@@ -182,7 +182,7 @@ VALUES
 (20, 'Bruna', 'Cardoso', 1);
 
 
---INSERT TESTE COM SENHAS HASHED (bcrypt)
+--INSERT TESTE COM SENHAS HASHED (bcrypt) SENHA = 123456
 INSERT INTO USUARIOS
 (usu_func_id, usu_login, usu_senha, usu_ativo)
 VALUES

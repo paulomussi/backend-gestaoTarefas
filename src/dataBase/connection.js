@@ -12,6 +12,11 @@ const config = {
   connectionLimit: 10, // Pode ajustar conforme a necessidade
   queueLimit: 0,
 };
+console.log("DB CONFIG:", {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
+});
 
 /* 
     -queueLimit-
