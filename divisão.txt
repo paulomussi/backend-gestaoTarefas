@@ -1,0 +1,3 @@
+UPDATE USUARIOS
+SET usu_senha = ''
+WHERE usu_login = 'Carlos';
